@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviour
     {
         HandleMovement();
         HandleMouseLook();
+        HandleNPCInteraction();
     }
 
     void HandleMovement()
@@ -63,4 +64,35 @@ public class PlayerController : MonoBehaviour
         cameraTransform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
         transform.Rotate(Vector3.up * mouseX);
     }
+
+    void HandleNPCInteraction()
+    {
+        // Klik kiri
+        if (Input.GetMouseButtonDown(0))
+        {
+            Ray ray = cameraTransform.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit, 5f))  // jarak 5 meter
+            {
+                GameObject npc = hit.collider.gameObject;
+
+                // Jika yang disentuh NPC Provokator → hapus
+                if (npc.CompareTag("Provokator"))
+                {
+                    Destroy(npc);
+                    Debug.Log("Provokator ditangani!");
+                    return;
+                }
+
+                // Jika NPC biasa → crowd emosi naik
+                if (npc.CompareTag("NPC"))
+                {
+                    GlobalEmotionManager.Instance.AddEmotion(10f);
+                    Debug.Log("Salah orang! Emosi massa naik.");
+                }
+            }
+        }
+    }
+
 }
