@@ -2,23 +2,34 @@ using UnityEngine;
 
 public class ProvokatorBehaviour : MonoBehaviour
 {
+    public Color provokatorColor = Color.red;
     public float emotionBoost = 5f;
-    public float interval = 5f;
+    public float interval = 3f;
 
-    private float timer = 0f;
+    private float timer;
+    private Renderer rend;
+    private Color originalColor;
 
     void Start()
     {
+        // ambil renderer NPC
+        rend = GetComponentInChildren<Renderer>();
+
+        if (rend != null)
+        {
+            // simpan warna asli
+            originalColor = rend.material.color;
+
+            // ubah ke merah
+            rend.material.color = provokatorColor;
+        }
+        else
+        {
+            Debug.LogWarning("Renderer tidak ditemukan di NPC!");
+        }
+
+        // ubah tag (opsional, untuk interaksi player)
         gameObject.tag = "Provokator";
-        // GameObject label = new GameObject("ProvokatorLabel");
-        // TextMesh text = label.AddComponent<TextMesh>();
-
-        // text.text = "PROVOKATOR";
-        // text.fontSize = 32;
-        // text.color = Color.red;
-        // text.characterSize = 0.1f;
-
-        // label.AddComponent<FollowTarget>().target = this.transform;
     }
 
     void Update()
@@ -28,7 +39,16 @@ public class ProvokatorBehaviour : MonoBehaviour
         if (timer >= interval)
         {
             timer = 0f;
-            GlobalEmotionManager.Instance.AddEmotion(emotionBoost);
+
+            if (GlobalEmotionManager.Instance != null)
+                GlobalEmotionManager.Instance.AddEmotion(emotionBoost);
         }
+    }
+
+    // opsional kalau ingin mengembalikan warna saat provokator dihapus
+    void OnDestroy()
+    {
+        if (rend != null)
+            rend.material.color = originalColor;
     }
 }

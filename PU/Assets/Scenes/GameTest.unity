@@ -2163,8 +2163,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CrowdSpawnerRealistic
   npcPrefab: {fileID: 6886428910158223881, guid: 34d7dc85ef6590b4e90e8db0d4368a05, type: 3}
-  minNPCPerBatch: 1
-  maxNPCPerBatch: 1
+  minNPCPerBatch: 3
+  maxNPCPerBatch: 6
   minBatchInterval: 3
   maxBatchInterval: 8
   spawnPoints:

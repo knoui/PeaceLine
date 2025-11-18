@@ -48,6 +48,9 @@ public class CrowdSpawnerRealistic : MonoBehaviour
 
             var agent = npc.GetComponent<NavMeshAgent>();
 
+            Animator a = npc.GetComponentInChildren<Animator>();
+            if (a != null) a.SetBool("isWalking", true);
+            
             // Pilih rally point acak
             Transform rally = rallyPoints[Random.Range(0, rallyPoints.Length)];
 
